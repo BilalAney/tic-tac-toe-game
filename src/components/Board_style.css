@@ -1,0 +1,6 @@
+.theBoard {
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  gap: 20px;
+  background-color: black;
+}
