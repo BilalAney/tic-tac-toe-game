@@ -1,6 +1,14 @@
+/** @format */
+
 .theBoard {
   display: grid;
   grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-  gap: 20px;
+  gap: 5px;
   background-color: black;
+  min-width: max-content;
+  min-height: max-content;
+  max-width: 290px;
+  max-height: 500px;
+  padding: 0;
+  margin: auto;
 }

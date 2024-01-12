@@ -3,6 +3,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import Board from "./components/Board";
+import Info from "./components/Info";
 import { useEffect, useRef, useState } from "react";
 
 function App() {
@@ -10,51 +11,80 @@ function App() {
   // "" indicates EMPTY SQUARE, false indicates X SQUARE and true indicated O SQUARE
   const [board, setBoard] = useState(newBoard());
   const [finsish, setFinish] = useState(false);
+  const [win, setWin] = useState(false);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     const status = checkTheStatus();
-    //changing the player
-    player.current = !player.current;
 
-    console.log(`Hey hey hey effect ran! the status => ${status}`);
-    // if (status === "draw") {
-    //   setBoard(newBoard());
-    //   setFinish(true);
-    // }
+    if (status === "no-win") {
+      //changing the player
+      player.current = !player.current;
+      setCount((pre) => pre + 1);
+    } else {
+      if (board.every((ele) => ele !== "empty")) {
+        setWin(false);
+      } else setWin(true);
 
-    // if (status === true || status === false) {
-    //   console.log(`Hey!! Player ${status ? "1" : "2"} won the game!!!`);
-    // }
+      setCount(0);
+      setBoard(newBoard());
+    }
   }, [board]);
 
   //Here the first player would be 'true' which means => Circles
   //And I will define the win status as a ref, bcz the component will re-render
   //When the finish state turns into true
   const player = useRef(true);
-  const winRef = useRef(false);
   /**
    * Each time the component re-renders, because the board has changed
    * I will change the player (Flapping, true <--> false)
-   * THE APP COMPONENT SHOULD NOT BE RENDERED UNLESS THE BOARD OBJECT CHANGES.
+   * THE APP COMPONENT SHOULD NOT BE RE-RENDERED UNLESS THE BOARD OBJECT CHANGES.
    *
    * WHY DIDN'T I USE A STATE
    * To avoid the useless re-rendering, since the component will re-render after the player selects
-   * a square, so there is no need to rerender it to determine the player
+   * a square, so there is no need to re-render it to determine the player
    */
 
   /**
    *
    * @params no parameters at all
    *
-   * @returns {boolean or string} true if "O" won, false if "X" won, and it returns
-   * "draw" if there is no winner nor empty square, and "none" if there is no any case, the
-   * playing is continuing...
+   * the board is as follows:
+   *
+   *  ---------------
+   * | 0  |  1  |  2 |
+   * | ------------- |
+   * | 3  |  4  |  5 |
+   * | ------------- |
+   * | 6  |  7  |  8 |
+   *  ---------------
+   *
+   * we will compare 0 with (if not "empty"):
+   *
+   * * 0+1 and 0+2 (row-1)
+   * * 0+3 and 0+6 (column-1)
+   * * 0+4 and 0+8 (slant-1)
+   *
+   * we will compare 4 with (if not "empty"):
+   *
+   * * 4-1 and 4+1 (row-2)
+   * * 4-3 and 4+3 (column-2)
+   * * 4-2 and 4+3 (slant-2)
+   *
+   * we will compare 8 with (if not "empty"):
+   *
+   * * 8-1 and 8-2 (row-3)
+   * * 8-3 and 8-6 (column-3)
+   *
+   * after that the return is as follows.
+   *
+   * @returns {string} returns the bar that caused the win, for example, row-2, column-3
+   * or slant-2.
    */
   function checkTheStatus() {
     let winBar = "no-win";
 
     board.forEach((ele, ind, arr) => {
-      console.log(`hey => ${ind} = ${arr[ind].value}`);
       if (ele.value !== "empty") {
         if (ele.id === 0) {
           winBar =
@@ -66,7 +96,7 @@ function App() {
               : ele.value === arr[ind + 4].value &&
                 ele.value === arr[ind + 8].value
               ? "slant-1"
-              : "";
+              : "no-win";
         } else if (ele.id === 4) {
           winBar =
             ele.value === arr[ind - 1].value && ele.value === arr[ind + 1].value
@@ -77,7 +107,7 @@ function App() {
               : ele.value === arr[ind - 2].value &&
                 ele.value === arr[ind + 2].value
               ? "slant-2"
-              : "";
+              : "no-win";
         } else if (ele.id === 8) {
           winBar =
             ele.value === arr[ind - 1].value && ele.value === arr[ind - 2].value
@@ -85,39 +115,12 @@ function App() {
               : ele.value === arr[ind - 3].value &&
                 ele.value === arr[ind - 6].value
               ? "column-3"
-              : "";
+              : "no-win";
         }
       }
     });
 
     return winBar;
-    // if (
-    // //The following is the horizontal
-    // (board[0] === board[1]) === board[2] ||
-    // (board[3] === board[4]) === board[5] ||
-    // (board[6] === board[7]) === board[8] ||
-    // //The following is the vertical
-    // (board[0] === board[3]) === board[6] ||
-    // (board[1] === board[4]) === board[7] ||
-    // (board[2] === board[5]) === board[8] ||
-    // //The following is the slanting
-    // (board[0] === board[4]) === board[8] ||
-    // (board[2] === board[4]) === board[6]
-    // )
-    // {
-    //   return true;
-    // }
-    // //the following is the full state
-    // else{
-    //   //Here I will count the not empty squares
-    //   let count = 0;
-    //   for(let item in board)
-    //   {
-    //     if(board[item] !== "")
-    //       count++;
-    //   }
-    //   count === 9 ? "full" : "notfull"
-    // }
   }
 
   function newBoard() {
@@ -148,6 +151,7 @@ function App() {
 
   return (
     <div className="App">
+      <Info player={player.current} count={count} win={win} />
       <Board
         handleClick={fillSquare}
         player={player.current}
