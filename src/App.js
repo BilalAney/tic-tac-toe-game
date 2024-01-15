@@ -1,13 +1,11 @@
 /** @format */
-
-import logo from "./logo.svg";
 import "./App.css";
 import Board from "./components/Board";
 import Info from "./components/Info";
 import { useEffect, useRef, useState } from "react";
 
 function App() {
-  //Here I will declare a state of the board, which is an object wit squares types
+  //Here I will declare a state of the board, which is an object with squares types
   // "" indicates EMPTY SQUARE, false indicates X SQUARE and true indicated O SQUARE
   const [board, setBoard] = useState(newBoard());
   const [finsish, setFinish] = useState(false);
@@ -16,16 +14,18 @@ function App() {
 
   useEffect(() => {
     const status = checkTheStatus();
-
+    bodyRef.current.classList.toggle("red");
     if (status === "no-win") {
       //changing the player
       player.current = !player.current;
       setCount((pre) => pre + 1);
+      if (board.every((ele) => ele.value !== "empty")) {
+        setFinish(true);
+        setCount(0);
+        setBoard(newBoard);
+      }
     } else {
-      if (board.every((ele) => ele !== "empty")) {
-        setWin(false);
-      } else setWin(true);
-
+      setWin(true);
       setCount(0);
       setBoard(newBoard());
     }
@@ -35,6 +35,7 @@ function App() {
   //And I will define the win status as a ref, bcz the component will re-render
   //When the finish state turns into true
   const player = useRef(true);
+  const bodyRef = useRef(document.body);
   /**
    * Each time the component re-renders, because the board has changed
    * I will change the player (Flapping, true <--> false)
@@ -98,6 +99,7 @@ function App() {
               ? "slant-1"
               : "no-win";
         } else if (ele.id === 4) {
+          if (winBar !== "no-win") return;
           winBar =
             ele.value === arr[ind - 1].value && ele.value === arr[ind + 1].value
               ? "row-2"
@@ -109,6 +111,7 @@ function App() {
               ? "slant-2"
               : "no-win";
         } else if (ele.id === 8) {
+          if (winBar !== "no-win") return;
           winBar =
             ele.value === arr[ind - 1].value && ele.value === arr[ind - 2].value
               ? "row-3"

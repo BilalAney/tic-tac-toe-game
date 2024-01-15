@@ -1,10 +1,28 @@
 /** @format */
 
 * {
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+}
+
+* {
   box-sizing: border-box;
 }
 
 .App {
   text-align: center;
   place-items: center;
+}
+
+body.red {
+  background: linear-gradient(90deg, white 80%, #cf0d23);
+}
+
+.blue {
+  background: linear-gradient(90deg, #6495ed 4%, white 27%);
+}
+
+body {
+  transition: 0.2s;
+  transition-property: linear-gradient;
 }
