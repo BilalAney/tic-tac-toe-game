@@ -4,6 +4,8 @@ import Board from "./components/Board";
 import Info from "./components/Info";
 import { useEffect, useRef, useState } from "react";
 
+//
+
 function App() {
   //Here I will declare a state of the board, which is an object with squares types
   // "" indicates EMPTY SQUARE, false indicates X SQUARE and true indicated O SQUARE
