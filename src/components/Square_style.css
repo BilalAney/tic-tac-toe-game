@@ -7,8 +7,14 @@
   font-size: 2.5rem;
   background-color: #fff;
   padding: 20px;
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
+  transition: all 0.3s;
+}
+
+span:active {
+  animation: popping;
+  animation-duration: 0.2s;
 }
 
 .o {
@@ -19,7 +25,7 @@
   color: red;
 }
 
-@keyframes poping {
+@keyframes popping {
   from {
     scale: 1;
   }
