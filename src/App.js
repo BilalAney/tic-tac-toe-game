@@ -16,7 +16,7 @@ function App() {
 
   useEffect(() => {
     const status = checkTheStatus();
-    bodyRef.current.classList.toggle("red");
+    // bodyRef.current.classList.toggle("red");
     if (status === "no-win") {
       //changing the player
       player.current = !player.current;
@@ -27,9 +27,11 @@ function App() {
         setBoard(newBoard);
       }
     } else {
-      setWin(true);
-      setCount(0);
-      setBoard(newBoard());
+      setTimeout(() => {
+        setWin(true);
+        setCount(0);
+        setBoard(newBoard());
+      }, 3000);
     }
   }, [board]);
 
@@ -37,7 +39,7 @@ function App() {
   //And I will define the win status as a ref, bcz the component will re-render
   //When the finish state turns into true
   const player = useRef(true);
-  const bodyRef = useRef(document.body);
+  // const bodyRef = useRef(document.body);
   /**
    * Each time the component re-renders, because the board has changed
    * I will change the player (Flapping, true <--> false)
@@ -155,14 +157,20 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <Info player={player.current} count={count} win={win} />
-      <Board
-        handleClick={fillSquare}
-        player={player.current}
-        currentBoard={board}
-      />
-    </div>
+    <>
+      <div className="colors">
+        <div className={`aColor ${player.current ? `red` : `blue`}`}></div>
+      </div>
+      <div className="App">
+        <Info player={player.current} count={count} win={win} />
+        <Board
+          handleClick={fillSquare}
+          player={player.current}
+          currentBoard={board}
+          winLine={checkTheStatus()}
+        />
+      </div>
+    </>
   );
 }
 

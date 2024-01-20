@@ -14,15 +14,41 @@
   place-items: center;
 }
 
-body.red {
-  background: linear-gradient(90deg, white 80%, #cf0d23);
-}
-
-.blue {
-  background: linear-gradient(90deg, #6495ed 4%, white 27%);
-}
-
 body {
   transition: 0.2s;
   transition-property: linear-gradient;
+}
+
+.colors {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: transparent;
+  z-index: -1;
+}
+
+.aColor {
+  transition: all 0.3s;
+}
+/* background: linear-gradient(90deg, #6495ed 4%, white 27%); */
+
+.blue {
+  /* background-color: #6494ed49; */
+  height: 100%;
+  width: 100%;
+  background-color: #8eaeea;
+}
+/* background: linear-gradient(90deg, white 80%, #cf0d23); */
+
+.red {
+  /* background-color: #cf0d242c; */
+  height: 100%;
+  width: 100%;
+  background-color: #eb6f7e;
 }
