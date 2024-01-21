@@ -6,7 +6,7 @@ import "./Board_style.css";
 export default function Board(props) {
   let squares = [];
 
-  let coloringLine;
+  let coloringLine = [];
 
   switch (props.winLine) {
     case "row-1": {
@@ -54,6 +54,7 @@ export default function Board(props) {
         id={ele.id}
         currentValue={ele.value}
         backgroundColor={props.player ? "#eb6f7e" : "#8eaeea"}
+        celebrateClass={coloringLine.includes(ele.id) ? "won" : "normal"}
       />
     );
   });
