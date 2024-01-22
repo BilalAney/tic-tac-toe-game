@@ -33,3 +33,27 @@ span:active {
     scale: 1.5;
   }
 }
+
+.won {
+  animation: coloring;
+  animation-duration: 0.6s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes coloring {
+  0% {
+    color: brown;
+  }
+  25% {
+    color: red;
+  }
+  50% {
+    color: blue;
+  }
+  75% {
+    color: blueviolet;
+  }
+  100% {
+    color: brown;
+  }
+}

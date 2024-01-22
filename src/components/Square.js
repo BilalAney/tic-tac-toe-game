@@ -8,7 +8,7 @@ export default function Square({
   handleClick,
   id,
   currentValue,
-  player,
+  celebrateClass,
 }) {
   const styles = {
     backgroundColor,
@@ -17,7 +17,7 @@ export default function Square({
   return (
     <div
       style={styles}
-      className={`square ${currentValue === "o" ? "o" : "x"}`}
+      className={`square ${currentValue === "o" ? "o" : "x"} ${celebrateClass}`}
       onClick={() => handleClick(id, currentValue)}
       id={id}
     >
