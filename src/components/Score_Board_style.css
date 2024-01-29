@@ -1,0 +1,11 @@
+/** @format */
+
+.scoreBoard {
+  color: rgb(240, 67, 9);
+  font-weight: 700;
+  font-style: italic;
+}
+
+.scoreBoard p {
+  font-size: 20px;
+}
