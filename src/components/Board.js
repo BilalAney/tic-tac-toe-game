@@ -2,8 +2,9 @@
 
 import Square from "./Square";
 import "./Board_style.css";
+import { memo } from "react";
 
-export default function Board(props) {
+function Board(props) {
   let squares = [];
 
   let coloringLine = [];
@@ -49,11 +50,12 @@ export default function Board(props) {
   props.currentBoard.forEach((ele) => {
     squares.push(
       <Square
+        key={ele.id}
         player={props.player}
         handleClick={props.handleClick}
         id={ele.id}
         currentValue={ele.value}
-        backgroundColor={props.player ? "#eb6f7e" : "#8eaeea"}
+        backgroundColor={props.player ? "#ecb1b8" : "#aec5f0"}
         celebrateClass={coloringLine.includes(ele.id) ? "won" : "normal"}
       />
     );
@@ -61,3 +63,5 @@ export default function Board(props) {
 
   return <div className="theBoard">{squares}</div>;
 }
+
+export default memo(Board);

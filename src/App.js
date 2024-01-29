@@ -2,27 +2,28 @@
 import "./App.css";
 import Board from "./components/Board";
 import Info from "./components/Info";
+import ScoreBoard from "./components/ScoreBoard";
 import { useEffect, useRef, useState } from "react";
-
-//
 
 function App() {
   //Here I will declare a state of the board, which is an object with squares types
   // "" indicates EMPTY SQUARE, false indicates X SQUARE and true indicated O SQUARE
-  const [board, setBoard] = useState(newBoard());
-  const [finsish, setFinish] = useState(false);
   const [win, setWin] = useState(false);
+  const [resetTime, setResetTime] = useState(false);
   const [count, setCount] = useState(0);
-
+  const [board, setBoard] = useState(newBoard);
+  const [scoreBoard, setScoreBoard] = useState({
+    o: 0,
+    x: 0,
+  });
   useEffect(() => {
     const status = checkTheStatus();
-    // bodyRef.current.classList.toggle("red");
+
     if (status === "no-win") {
       //changing the player
       player.current = !player.current;
-      setCount((pre) => pre + 1);
+
       if (board.every((ele) => ele.value !== "empty")) {
-        setFinish(true);
         setCount(0);
         setBoard(newBoard);
       }
@@ -33,6 +34,7 @@ function App() {
         setBoard(newBoard());
       }, 3000);
     }
+    if (win) setWin(false);
   }, [board]);
 
   //Here the first player would be 'true' which means => Circles
@@ -142,18 +144,39 @@ function App() {
     return newBoard;
   }
 
-  function fillSquare(id, currentValue) {
+  function fillSquare(id) {
+    const symbol = player.current ? "o" : "x";
     //Updating the board object
+
+    setCount((pre) => pre + 1);
     setBoard((pre) => {
       return pre.map((ele) =>
         ele.id === id
           ? {
               ...ele,
-              value: player.current ? "o" : "x",
+              value: ele.value === "empty" ? symbol : ele.value,
             }
           : ele
       );
     });
+  }
+
+  function handleReset() {
+    //The 'IFs' below are for optimization...
+
+    //if the count is smaller than one then don't reset it
+    if (count > 0) setCount(0);
+
+    //if win is false already then don't reset it
+    if (win) setWin(false);
+
+    //if any object of the board array don't have "empty" value, then don't reset the board
+    if (board.some((ele) => ele.value !== "empty")) setBoard(newBoard);
+
+    //if one of the players' count is not zero, then reset it
+    if (scoreBoard.o > 0 || scoreBoard.x > 0) setScoreBoard({ o: 0, x: 0 });
+
+    if (!resetTime) setResetTime(true);
   }
 
   return (
@@ -162,13 +185,29 @@ function App() {
         <div className={`aColor ${player.current ? `red` : `blue`}`}></div>
       </div>
       <div className="App">
-        <Info player={player.current} count={count} win={win} />
+        <Info
+          player={player.current}
+          count={count}
+          win={win}
+          restart={resetTime}
+        />
         <Board
           handleClick={fillSquare}
           player={player.current}
           currentBoard={board}
           winLine={checkTheStatus()}
         />
+        <ScoreBoard
+          win={win}
+          player={player.current}
+          scoreBoard={scoreBoard}
+          setScoreBoard={setScoreBoard}
+        />
+        <div>
+          <button className="resetBtn" onClick={handleReset}>
+            RESET
+          </button>
+        </div>
       </div>
     </>
   );

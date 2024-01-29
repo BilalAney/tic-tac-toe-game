@@ -1,21 +1,23 @@
 /** @format */
 
-import { useState, useEffect, memo, useRef } from "react";
+import { useEffect, memo, useRef } from "react";
 
-function Timer(props) {
-  const [count, setCount] = useState(0);
+function Timer({ timerCount, setTimerCount }) {
+  const ref = useRef();
 
   useEffect(() => {
-    const id = setInterval(() => setCount((pre) => pre + 1), 1000);
-    return () => clearInterval(id);
+    ref.current = setInterval(() => setTimerCount((pre) => pre + 1), 1000);
+    return () => {
+      clearInterval(ref.current);
+    };
   }, []);
 
   //note that the following are derived states
-  const seconds = `0${Math.floor(count % 60)}`.slice(-2);
-  const minutes = `0${Math.floor((count / 60) % 60)}`.slice(-2);
+  const seconds = `0${Math.floor(timerCount % 60)}`.slice(-2);
+  const minutes = `0${Math.floor((timerCount / 60) % 60)}`.slice(-2);
 
   const styles = {
-    margin: "25px",
+    margin: "0px",
   };
 
   return (

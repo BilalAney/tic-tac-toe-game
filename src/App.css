@@ -36,13 +36,12 @@ body {
 .aColor {
   transition: all 0.3s;
 }
-/* background: linear-gradient(90deg, #6495ed 4%, white 27%); */
 
 .blue {
   /* background-color: #6494ed49; */
   height: 100%;
   width: 100%;
-  background-color: #8eaeea;
+  background-color: #aec5f0;
 }
 /* background: linear-gradient(90deg, white 80%, #cf0d23); */
 
@@ -50,5 +49,22 @@ body {
   /* background-color: #cf0d242c; */
   height: 100%;
   width: 100%;
-  background-color: #eb6f7e;
+  background-color: #ecb1b8;
+}
+
+.timerCtn {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin: 25px;
+}
+
+button {
+  background-color: #3feb18;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
 }
